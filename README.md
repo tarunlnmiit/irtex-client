@@ -1,30 +1,27 @@
-# IRTEX-1.0 (Client side)
+# Frontend
 
-## This is the working Scientific project about an Image Retrieval Engine
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
 
-> The project currently consists of 2 branches:
-  1. master - production code ready
-  2. develop - development merge of all features
-  
-> ### There should not be any incomplete commits in master branch. All developmental code needs to be in develop. Only after complete testing these commits must be merged in the master branch.
+## Development server
 
->> ### All frontend changes must be committed to first develop branch
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-> The application can be initiated in the following manner but it has some prerequisites.
-  >> Node.js version **10.19.0**
-    
-  * Clone the repository in the any location on your system.
-      
-      `git clone https://github.com/tarunlnmiit/irtex-client.git`
-  
-  * In order to initialise the frontend Angular app the following commands needs to be used after execution of the above commands
-      ```
-      cd irtex-client
-      npm install 
-      ng serve -o
-      ```
-    
-  * The frontend app will open in default browser automatically on the url http://localhost:4200
+## Code scaffolding
 
-  
-  
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
