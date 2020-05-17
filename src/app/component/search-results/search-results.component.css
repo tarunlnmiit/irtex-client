@@ -1,0 +1,11 @@
+canvas {
+  width: 60% !important;
+  height: 40% !important;
+}
+.progress {
+  margin-bottom: 2px;
+  height: 0.9em;
+}
+.progress span {
+  color: black;
+}
