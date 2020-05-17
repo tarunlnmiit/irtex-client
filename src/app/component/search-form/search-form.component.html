@@ -1,0 +1,39 @@
+<div class="container">
+  <div style="margin: auto; width: 500px;">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="btn btn-file btn-primary">
+            Browse
+            <input type="file" name="file" (change)="onFileChange($event)" />
+          </div>
+          <span style="width: 5px;"></span>
+        </div>
+        <input
+          type="text"
+          name="url"
+          class="form-control"
+          placeholder="Use the upload button or enter image url"
+        />
+        <div class="input-group-append" id="btn4">
+          <button
+            type="submit"
+            class="btn btn-default btn-outline-secondary"
+            type="button"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </form>
+    <span class="text-center text-danger">{{ error }}</span>
+  </div>
+  <div style="margin: auto; width: 100px;">
+    <mat-progress-spinner
+      [hidden]="hideSpinner"
+      mode="indeterminate"
+      value="66"
+      diameter="45"
+    ></mat-progress-spinner>
+  </div>
+</div>
