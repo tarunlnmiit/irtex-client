@@ -16,7 +16,6 @@
             </div>
             <div class="p-3">
               <img
-                class="img-fluid"
                 style="max-width: 300px;"
                 height="100px"
                 src="{{ ImageBaseUrl + query.url }}"
@@ -74,20 +73,24 @@
                 <img
                   width="100"
                   class="img-fluid"
-                  src="{{ ImageDatasetBaseUrl + result.img }}"
+                  src="{{ ImageBaseUrl + result.url }}"
                   alt=""
                 />
               </div>
               <div class="p-2 d-flex">
                 <div style="min-width: 400px;">
-                  <h5>{{ result.img }}</h5>
+                  <h5>
+                    {{ result.name }}
+                    <span class="text-muted small">[{{ result.label }}]</span>
+                  </h5>
+
                   <p>General explanation</p>
                   <div style="display: block; max-width: 250px;">
                     <div class="progress">
                       <div
                         class="progress-bar"
                         role="progressbar"
-                        [style.width]="result.sim * 100 + '%'"
+                        [style.width]="result.similarity * 100 + '%'"
                         aria-valuenow="8"
                         aria-valuemin="0"
                         aria-valuemax="100"

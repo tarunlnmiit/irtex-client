@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { SearchResult } from '../common/SearchResult';
 import { HttpClient } from '@angular/common/http';
 import { QueryImage } from '../common/queryImage';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,12 @@ export class SearchService {
 
   getSearchResults(imageId: string): Observable<SearchResult[]> {
     const searchUrl = `${this.baseUrl}result/${imageId}`;
-    return this.httpClient.get<SearchResult[]>(searchUrl);
+    return this.httpClient
+      .get<ApiResponse>(searchUrl)
+      .pipe(map((response) => response.result));
   }
+}
+
+interface ApiResponse {
+  result: SearchResult[];
 }

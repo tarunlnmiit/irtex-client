@@ -19,7 +19,6 @@ export class SearchResultsComponent implements OnInit {
   hideSpinner = true;
   error: string;
   //Todo: Read from .env
-  ImageDatasetBaseUrl = 'http://localhost:8000/media/sample1/';
   ImageBaseUrl = 'http://localhost:8000';
   // MatPaginator Inputs
   length: number;

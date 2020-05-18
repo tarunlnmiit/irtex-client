@@ -1,6 +1,6 @@
 export class SearchResult {
-  img: string;
-  sim: number;
+  name: string;
+  similarity: number;
   url: string;
   label: string;
 }
