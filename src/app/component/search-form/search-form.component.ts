@@ -34,19 +34,19 @@ export class SearchFormComponent implements OnInit {
       const file = event.target.files[0];
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('url', 'n/a');
-      formData.append('name', file.name);
+      // formData.append('url', null);
+      // formData.append('name', file.name);
       this.apiservice.upload(formData, '').subscribe(
         (res) => {
           this.response = res;
           console.log(res);
-          if (res.id) {
+          if (res._id) {
             //navigate to the results page
             this.hideSpinner = true;
             const inHome = this.router.url === '/';
             console.log(this.router.url);
             this.router.navigateByUrl(
-              '/results?id=' + res.id + '&inHome=' + inHome
+              '/results?id=' + res._id + '&inHome=' + inHome
             );
           }
         },
@@ -70,7 +70,7 @@ export class SearchFormComponent implements OnInit {
     this.apiservice.upload(formData, 'search-url').subscribe(
       (res) => {
         console.log(res);
-        if (res.id) {
+        if (res._id) {
           this.response = res;
         }
         //navigate to the results page

@@ -9,16 +9,16 @@ import { QueryImage } from '../common/queryImage';
 })
 export class SearchService {
   //TODO : read from .env
-  private baseUrl = 'http://localhost:8000/upload';
+  private baseUrl = 'http://127.0.0.1:8000/';
   constructor(private httpClient: HttpClient) {}
 
   getQueryImageDetails(imageId: string): Observable<QueryImage> {
-    const searchUrl = `${this.baseUrl}/fetch_image/${imageId}`;
+    const searchUrl = `${this.baseUrl}image/${imageId}`;
     return this.httpClient.get<QueryImage>(searchUrl);
   }
 
   getSearchResults(imageId: string): Observable<SearchResult[]> {
-    const searchUrl = `${this.baseUrl}/fetch_results/${imageId}`;
+    const searchUrl = `${this.baseUrl}result/${imageId}`;
     return this.httpClient.get<SearchResult[]>(searchUrl);
   }
 }
