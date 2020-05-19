@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchResult } from '../common/SearchResult';
+import { SearchResult } from '../common/searchResult';
 import { HttpClient } from '@angular/common/http';
 import { QueryImage } from '../common/queryImage';
 import { map } from 'rxjs/operators';
