@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { SearchService } from 'src/app/services/search.service';
 import { ActivatedRoute } from '@angular/router';
-import { SearchResult } from 'src/app/common/SearchResult';
+import { SearchResult } from 'src/app/common/searchResult';
 import { QueryImage } from 'src/app/common/queryImage';
 
 @Component({
