@@ -4,6 +4,7 @@ import { SearchService } from 'src/app/services/search.service';
 import { ActivatedRoute } from '@angular/router';
 import { SearchResult } from 'src/app/common/searchResult';
 import { QueryImage } from 'src/app/common/queryImage';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-search-results',
@@ -18,8 +19,8 @@ export class SearchResultsComponent implements OnInit {
   features = ['CLD', 'RBD', 'ORB'];
   hideSpinner = true;
   error: string;
-  //Todo: Read from .env
-  ImageBaseUrl = 'http://localhost:8000';
+
+  ImageBaseUrl = environment.BackEndUrl;
   // MatPaginator Inputs
   length: number;
   pageSize: number;

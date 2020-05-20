@@ -4,22 +4,22 @@ import { SearchResult } from '../common/searchResult';
 import { HttpClient } from '@angular/common/http';
 import { QueryImage } from '../common/queryImage';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-  //TODO : read from .env
-  private baseUrl = 'http://127.0.0.1:8000/';
+  private baseUrl = environment.BackEndUrl;
   constructor(private httpClient: HttpClient) {}
 
   getQueryImageDetails(imageId: string): Observable<QueryImage> {
-    const searchUrl = `${this.baseUrl}image/${imageId}`;
+    const searchUrl = `${this.baseUrl}/image/${imageId}`;
     return this.httpClient.get<QueryImage>(searchUrl);
   }
 
   getSearchResults(imageId: string): Observable<SearchResult[]> {
-    const searchUrl = `${this.baseUrl}result/${imageId}`;
+    const searchUrl = `${this.baseUrl}/result/${imageId}`;
     return this.httpClient
       .get<ApiResponse>(searchUrl)
       .pipe(map((response) => response.result));
