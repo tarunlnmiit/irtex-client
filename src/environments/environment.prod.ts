@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backEndUrl: 'http://localhost:8000',
+  backEndUrl: 'https://irtex-engine.herokuapp.com',
 };
