@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class SearchService {
-  private baseUrl = 'https://irtex-engine.herokuapp.com';
+  private baseUrl = environment.backEndUrl;
   constructor(private httpClient: HttpClient) {}
 
   getQueryImageDetails(imageId: string): Observable<QueryImage> {

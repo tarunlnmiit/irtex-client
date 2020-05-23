@@ -20,7 +20,7 @@ export class SearchResultsComponent implements OnInit {
   hideSpinner = true;
   error: string;
 
-  ImageBaseUrl = 'https://irtex-engine.herokuapp.com';
+  ImageBaseUrl = environment.backEndUrl;
   // MatPaginator Inputs
   length: number;
   pageSize: number;
