@@ -11,8 +11,8 @@ import { ResultResponse } from '../common/resultResponse';
   providedIn: 'root',
 })
 export class SearchService {
-  private baseUrl = 'https://irtex-engine.herokuapp.com';
-  // private baseUrl = 'http://localhost:8000';
+  // private baseUrl = 'https://irtex-engine.herokuapp.com';
+  private baseUrl = 'http://localhost:8000';
   constructor(private httpClient: HttpClient) {}
 
   getQueryImageDetails(imageId: string): Observable<QueryImage> {
