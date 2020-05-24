@@ -24,8 +24,17 @@
             </div>
             <div class="p-2">
               <h4>Search results for {{ query.name }}</h4>
-              <p>abc items found</p>
-              <span class="muted">Searching xyz images</span>
+
+              <span class="muted"
+                >Searching 50,000 images from the CIFAR 10 dataset</span
+              >
+              <p
+                *ngIf="results.length > 0"
+                class="font-weight-bold"
+                [hidden]="results.length == 0"
+              >
+                {{ results.length }} results retrieved
+              </p>
             </div>
           </div>
         </div>
@@ -45,10 +54,13 @@
         <div>
           <mat-form-field appearance="fill">
             <mat-label>Rank By</mat-label>
-            <mat-select>
-              <mat-option value="primary">{{ features[0] }}</mat-option>
-              <mat-option value="accent">{{ features[1] }}</mat-option>
-              <mat-option value="warn">{{ features[2] }}</mat-option>
+            <mat-select [value]="selectedFeature">
+              <mat-option
+                [value]="f"
+                (onSelectionChange)="onRankByChanged($event)"
+                *ngFor="let f of features"
+                >{{ f }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </div>
@@ -86,41 +98,11 @@
 
                   <p>General explanation</p>
                   <div style="display: block; max-width: 250px;">
-                    <div class="progress">
-                      <div
-                        class="progress-bar"
-                        role="progressbar"
-                        [style.width]="result.similarity * 100 + '%'"
-                        aria-valuenow="8"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        <span>{{ features[0] }}</span>
-                      </div>
-                    </div>
-                    <div class="progress">
-                      <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        style="width: 27%;"
-                        aria-valuenow="27"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        <span>{{ features[1] }}</span>
-                      </div>
-                    </div>
-                    <div class="progress">
-                      <div
-                        class="progress-bar bg-info"
-                        role="progressbar"
-                        style="width: 95%;"
-                        aria-valuenow="95"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        <span>{{ features[2] }}</span>
-                      </div>
+                    <div>
+                      <span>{{ selectedFeature }} </span
+                      ><span class="badge badge-primary">{{
+                        result.similarity * 100 + "%"
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -133,17 +115,12 @@
                   "
                 >
                   <mat-tab-group>
-                    <mat-tab label="{{ features[0] }}">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Exercitatione
-                    </mat-tab>
-                    <mat-tab label="{{ features[1] }}">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Exercitatione
-                    </mat-tab>
-                    <mat-tab label="{{ features[2] }}"
-                      >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Exercitatione
+                    <mat-tab
+                      *ngFor="let feature of features"
+                      label="{{ feature }}"
+                    >
+                      Specific textual explanation for {{ feature }} will show
+                      up here
                     </mat-tab>
                   </mat-tab-group>
                 </div>

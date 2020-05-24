@@ -5,12 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { QueryImage } from '../common/queryImage';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { ResultResponse } from '../common/resultResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-  private baseUrl = 'https://irtex-engine.herokuapp.com';
+  private baseUrl = environment.backEndUrl;
   constructor(private httpClient: HttpClient) {}
 
   getQueryImageDetails(imageId: string): Observable<QueryImage> {
@@ -18,14 +19,8 @@ export class SearchService {
     return this.httpClient.get<QueryImage>(searchUrl);
   }
 
-  getSearchResults(imageId: string): Observable<SearchResult[]> {
+  getSearchResults(imageId: string): Observable<ResultResponse> {
     const searchUrl = `${this.baseUrl}/result/${imageId}`;
-    return this.httpClient
-      .get<ApiResponse>(searchUrl)
-      .pipe(map((response) => response.result));
+    return this.httpClient.get<ResultResponse>(searchUrl);
   }
-}
-
-interface ApiResponse {
-  result: SearchResult[];
 }

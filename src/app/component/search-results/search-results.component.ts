@@ -5,6 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { SearchResult } from 'src/app/common/searchResult';
 import { QueryImage } from 'src/app/common/queryImage';
 import { environment } from '../../../environments/environment';
+import { ResultResponse } from 'src/app/common/resultResponse';
+import { MatSelectChange } from '@angular/material/select';
+import { MatOptionSelectionChange } from '@angular/material/core';
 
 @Component({
   selector: 'app-search-results',
@@ -12,15 +15,17 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./search-results.component.css'],
 })
 export class SearchResultsComponent implements OnInit {
+  resultResponse: ResultResponse;
   results: SearchResult[];
   renderedResults: SearchResult[];
   imageId: string;
   query: QueryImage;
-  features = ['CLD', 'RBD', 'ORB'];
+  features = [];
   hideSpinner = true;
   error: string;
+  selectedFeature: string;
 
-  ImageBaseUrl = 'https://irtex-engine.herokuapp.com';
+  ImageBaseUrl = environment.backEndUrl;
   // MatPaginator Inputs
   length: number;
   pageSize: number;
@@ -32,6 +37,7 @@ export class SearchResultsComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.error = '';
+    this.results = [];
   }
 
   ngOnInit(): void {
@@ -61,6 +67,7 @@ export class SearchResultsComponent implements OnInit {
       this.searchService.getQueryImageDetails(this.imageId).subscribe(
         (data) => {
           this.query = data;
+          this.renderedResults = [];
         },
         (err) => {
           this.error = err.message;
@@ -83,7 +90,7 @@ export class SearchResultsComponent implements OnInit {
         (data) => {
           console.log(data);
           this.hideSpinner = true;
-          this.results = data;
+          this.resultResponse = data;
           this.showResults();
         },
         (err) => {
@@ -100,12 +107,48 @@ export class SearchResultsComponent implements OnInit {
   }
 
   showResults(): void {
+    this.features = this.resultResponse.features;
+    this.selectedFeature = this.features[0];
+    this.results = this.resultResponse.result;
     this.length = this.results.length;
     this.pageSize = 10;
+    this.renderPagination();
+  }
+
+  renderPagination(): void {
     this.renderedResults =
       this.results.length > 10
         ? this.results.slice(0, this.pageSize)
         : this.results;
+  }
+
+  onRankByChanged(event: MatOptionSelectionChange): MatOptionSelectionChange {
+    if (event.isUserInput) {
+      this.hideSpinner = false;
+      this.renderedResults = [];
+      switch (event.source.value) {
+        case this.features[0]:
+          this.results = this.resultResponse.result;
+          break;
+
+        case this.features[1]:
+          this.results = this.resultResponse.cld;
+          break;
+        case this.features[2]:
+          this.results = this.resultResponse.rbsd;
+          break;
+
+        default:
+          this.results = this.resultResponse.result;
+          break;
+      }
+      console.log(event);
+      this.selectedFeature = event.source.value;
+      this.renderPagination();
+      this.hideSpinner = true;
+    }
+
+    return event;
   }
 
   paginateResult(event: PageEvent): PageEvent {
