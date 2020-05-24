@@ -24,11 +24,11 @@
 
   `npm install`
 
-## Development server
+## development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Workings
+## workings
 
 * The frontend provides option to upload an image from the local system or provide an image URL. If the image is uploaded from the local system, it is directly uploaded without the click of any buttons and similar images are fetched. If the image URL is provided, then the *Search* button needs to be clicked
 
@@ -42,3 +42,5 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 * The frontend has the option to filter the results based on the above defined 3 parameters by selecting any option from the Rank dropdown. By default it is combined results of the above two where for now we are just taking the average of the above 2 similarities.
 
 * The frontend also provides option to change the number of results on a page (5, 10, 25, 100) along with pagination based on the number of results selected on a page.
+
+* There is a chance that when using the deployed heroku app in browser on https://irtex-client.herokuapp.com, that an error might present itself. It can happen because in the free tier on heroku it terminates a request after 30 seconds and no response is returned. This can happen because the of lack of resource availability at heroku at that point of time. Just refreshing the page should work in such a case.
