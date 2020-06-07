@@ -3,4 +3,5 @@ export class SearchResult {
   similarity: number;
   url: string;
   label: string;
+  similarity_list: string[];
 }

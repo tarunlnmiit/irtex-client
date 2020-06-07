@@ -75,7 +75,12 @@
         </div>
       </div>
       <div class="">
-        <div *ngFor="let result of renderedResults" class="row mt-5">
+        <div
+          *ngFor="let result of renderedResults; index as i"
+          (click)="logUserClick(i)"
+          class="row mt-5"
+          [id]="i"
+        >
           <div class="col-sm-12">
             <div class="d-flex">
               <div class="p-2 align-self-center">
@@ -84,7 +89,7 @@
               <div class="p-3">
                 <img
                   width="100"
-                  class="img-fluid"
+                  class=""
                   src="{{ ImageBaseUrl + result.url }}"
                   alt=""
                 />
@@ -98,11 +103,26 @@
 
                   <p>General explanation</p>
                   <div style="display: block; max-width: 250px;">
-                    <div>
+                    <div style="font-size: 0.6em;">
+                      <div
+                        *ngFor="let feature of features; index as i"
+                        class="mb-1"
+                      >
+                        <span>{{ feature }}</span>
+                        <mat-progress-bar
+                          mode="determinate"
+                          [value]="
+                            i != 0
+                              ? toFloatPercentage(result.similarity_list[i + 1])
+                              : result.similarity * 100
+                          "
+                        ></mat-progress-bar>
+                      </div>
+
                       <span>{{ selectedFeature }} </span
-                      ><span class="badge badge-primary">{{
-                        result.similarity * 100 + "%"
-                      }}</span>
+                      ><span class="badge badge-primary"
+                        >{{ result.similarity * 100 | number: "1.0-0" }} %</span
+                      >
                     </div>
                   </div>
                 </div>

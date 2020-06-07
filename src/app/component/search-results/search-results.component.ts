@@ -24,6 +24,8 @@ export class SearchResultsComponent implements OnInit {
   hideSpinner = true;
   error: string;
   selectedFeature: string;
+  dataset: string;
+  sessionId: string;
 
   ImageBaseUrl = environment.backEndUrl;
   // MatPaginator Inputs
@@ -41,6 +43,12 @@ export class SearchResultsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.route.snapshot.queryParams['session_id']) {
+      this.sessionId = this.route.snapshot.queryParams['session_id'];
+    }
+    if (this.route.snapshot.queryParams['dataset']) {
+      this.dataset = this.route.snapshot.queryParams['dataset'];
+    }
     this.route.url.subscribe((url) => {
       if (this.route.snapshot.queryParams['inHome']) {
         const inHome = this.route.snapshot.queryParams['inHome'];
@@ -86,7 +94,7 @@ export class SearchResultsComponent implements OnInit {
     if (this.route.snapshot.queryParams['id']) {
       this.hideSpinner = false;
       this.imageId = this.route.snapshot.queryParams['id'];
-      this.searchService.getSearchResults(this.imageId).subscribe(
+      this.searchService.getSearchResults(this.imageId, this.dataset).subscribe(
         (data) => {
           console.log(data);
           this.hideSpinner = true;
@@ -158,5 +166,16 @@ export class SearchResultsComponent implements OnInit {
     );
 
     return event;
+  }
+
+  logUserClick(index): void {
+    //Todo: send event to log file
+    console.log(index + ' was clicked');
+  }
+
+  toFloatPercentage(val) {
+    try {
+      return parseFloat(val) * 100;
+    } catch (error) {}
   }
 }

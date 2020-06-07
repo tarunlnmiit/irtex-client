@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class ApiRequestService {
-  SERVER_URL: string = environment.backEndUrl + '/upload/';
+  SERVER_URL: string = environment.backEndUrl;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -32,6 +32,26 @@ export class ApiRequestService {
               const progress = Math.round((100 * event.loaded) / event.total);
               return { status: 'progress', message: progress };
 
+            case HttpEventType.Response:
+              return event.body;
+            default:
+              return `Unhandled event: ${event.type}`;
+          }
+        })
+      );
+  }
+
+  public startSession(data, url_path) {
+    let pathURL = this.SERVER_URL + url_path;
+
+    return this.httpClient
+      .post<any>(pathURL, data, {
+        reportProgress: true,
+        observe: 'events',
+      })
+      .pipe(
+        map((event) => {
+          switch (event.type) {
             case HttpEventType.Response:
               return event.body;
             default:

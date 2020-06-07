@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiRequestService } from '../../services/api-request.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search-form',
@@ -11,18 +12,27 @@ import { Router } from '@angular/router';
 export class SearchFormComponent implements OnInit {
   form: FormGroup;
   error: string;
+  sessionId: string;
+  dataset: string;
   url: string;
   response = { status: '', message: '', guid: '' };
   hideSpinner: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private apiservice: ApiRequestService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.hideSpinner = true;
   }
 
   ngOnInit(): void {
+    if (this.route.snapshot.queryParams['session_id']) {
+      this.sessionId = this.route.snapshot.queryParams['session_id'];
+    }
+    if (this.route.snapshot.queryParams['dataset']) {
+      this.dataset = this.route.snapshot.queryParams['dataset'];
+    }
     this.form = this.formBuilder.group({
       url: '',
       file: [''],
@@ -36,7 +46,7 @@ export class SearchFormComponent implements OnInit {
       formData.append('file', file);
       // formData.append('url', null);
       // formData.append('name', file.name);
-      this.apiservice.upload(formData, '').subscribe(
+      this.apiservice.upload(formData, '/upload/').subscribe(
         (res) => {
           this.response = res;
           console.log(res);
@@ -46,7 +56,7 @@ export class SearchFormComponent implements OnInit {
             const inHome = this.router.url === '/';
             console.log(this.router.url);
             this.router.navigateByUrl(
-              '/results?id=' + res._id + '&inHome=' + inHome
+              `/results?id=${res._id}&inHome=${inHome}&dataset=${this.dataset}&session_id=${this.sessionId}`
             );
           }
         },

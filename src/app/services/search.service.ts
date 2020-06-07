@@ -19,8 +19,11 @@ export class SearchService {
     return this.httpClient.get<QueryImage>(searchUrl);
   }
 
-  getSearchResults(imageId: string): Observable<ResultResponse> {
-    const searchUrl = `${this.baseUrl}/result/${imageId}`;
+  getSearchResults(
+    imageId: string,
+    dataset: string
+  ): Observable<ResultResponse> {
+    const searchUrl = `${this.baseUrl}/result/${imageId}?dataset=${dataset}`;
     return this.httpClient.get<ResultResponse>(searchUrl);
   }
 }
