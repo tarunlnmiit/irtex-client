@@ -18,6 +18,8 @@ export class SignInComponent implements OnInit {
     { Id: 'pascal', name: 'PASCAL VOC' },
   ];
   hideSpinner: boolean;
+  selectedDataset: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private apiservice: ApiRequestService,
@@ -28,16 +30,23 @@ export class SignInComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      dataset: 'cifar',
+      dataset: '',
     });
+    this.selectedDataset = '';
+  }
+
+  changeDataset(e) {
+    this.selectedDataset = e.target.value;
+    console.log(this.selectedDataset);
   }
 
   onSubmit() {
     this.hideSpinner = false;
 
     const formData = new FormData();
-    let seleted = this.form.get('dataset').value;
-    formData.append('dataset', seleted);
+    let selected = this.form.get('dataset').value;
+    console.log(this.form);
+    formData.append('dataset', this.selectedDataset);
     this.apiservice.startSession(formData, '/upload/start').subscribe(
       (res) => {
         this.response = res;
@@ -47,7 +56,7 @@ export class SignInComponent implements OnInit {
           this.hideSpinner = true;
           console.log(this.router.url);
           this.router.navigateByUrl(
-            '/search?session_id=' + res._id + '&dataset=' + seleted
+            '/search?session_id=' + res._id + '&dataset=' + this.selectedDataset
           );
         }
       },

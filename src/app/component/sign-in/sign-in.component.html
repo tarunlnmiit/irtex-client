@@ -3,17 +3,25 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="input-group">
         <select
+          (change)="changeDataset($event)"
+          formControlName="dataset"
           name="dataset"
           id="dataset"
           class="form-control"
           required="required"
         >
+          <option value="" disabled>Select Dataset</option>
           <option *ngFor="let d of datasets" [ngValue]="d.Id" [value]="d.Id">{{
             d.name
           }}</option>
         </select>
         <div class="input-group-append" id="btn4">
-          <input type="submit" class="btn btn-primary" value="Begin" />
+          <input
+            [disabled]="selectedDataset == ''"
+            type="submit"
+            class="btn btn-primary"
+            value="Begin"
+          />
         </div>
       </div>
     </form>
