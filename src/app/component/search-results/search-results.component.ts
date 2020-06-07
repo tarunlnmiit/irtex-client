@@ -27,7 +27,8 @@ export class SearchResultsComponent implements OnInit {
   dataset: string;
   sessionId: string;
 
-  ImageBaseUrl = environment.backEndUrl;
+  // ImageBaseUrl = 'https://irtex-engine.herokuapp.com';
+  ImageBaseUrl = 'http://localhost:8000';
   // MatPaginator Inputs
   length: number;
   pageSize: number;
