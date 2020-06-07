@@ -103,21 +103,25 @@
 
                   <p>General explanation</p>
                   <div style="display: block; max-width: 250px;">
-                    <div style="font-size: 0.6em;">
-                      <div
-                        *ngFor="let feature of features; index as i"
-                        class="mb-1"
-                      >
-                        <span>{{ feature }}</span>
-                        <mat-progress-bar
-                          mode="determinate"
-                          [value]="
-                            i != 0
-                              ? toFloatPercentage(result.similarity_list[i + 1])
-                              : result.similarity * 100
-                          "
-                        ></mat-progress-bar>
-                      </div>
+                    <div style="font-size: 0.7em;">
+                      <span *ngIf="result.similarity_list">
+                        <div
+                          *ngFor="let feature of features; index as i"
+                          class="mb-1"
+                        >
+                          <span>{{ feature }}</span>
+                          <mat-progress-bar
+                            mode="determinate"
+                            [value]="
+                              i != 0
+                                ? toFloatPercentage(
+                                    result.similarity_list[i + 1]
+                                  )
+                                : result.similarity * 100
+                            "
+                          ></mat-progress-bar>
+                        </div>
+                      </span>
 
                       <span>{{ selectedFeature }} </span
                       ><span class="badge badge-primary"
