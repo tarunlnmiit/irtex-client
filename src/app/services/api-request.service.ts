@@ -15,7 +15,7 @@ import { environment } from '../../environments/environment';
 export class ApiRequestService {
   //SERVER_URL: string = environment.backEndUrl;
   // SERVER_URL: string = 'https://irtex-engine.herokuapp.com' + '/upload/';
-  SERVER_URL: string = 'http://localhost:8000' + '/upload/';
+  SERVER_URL: string = 'http://localhost:8000';
 
   constructor(private httpClient: HttpClient) {}
 
