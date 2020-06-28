@@ -1,0 +1,22 @@
+<div>
+  <div>
+    <div *ngFor="let p of pieCharts; index as i" style="display: inline-block;">
+      <div class="chart">
+        <h6 class="text-center">{{ features[i] }}</h6>
+        <canvas
+          baseChart
+          [data]="p.pieChartData"
+          [chartType]="p.pieChartType"
+          [labels]="p.pieChartLabels"
+          [options]="p.pieChartOptions"
+          [plugins]="p.pieChartPlugins"
+          [colors]="p.pieChartColors"
+          [legend]="p.pieChartLegend"
+        >
+        </canvas>
+        <hr />
+      </div>
+    </div>
+  </div>
+  <div></div>
+</div>

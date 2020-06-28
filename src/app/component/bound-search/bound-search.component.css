@@ -1,0 +1,7 @@
+.active-query {
+  border: 2px solid green;
+}
+
+.query-image:hover {
+  border: 2px solid pink;
+}

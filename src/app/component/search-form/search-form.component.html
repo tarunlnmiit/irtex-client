@@ -12,17 +12,17 @@
         <input
           type="text"
           name="url"
+          formControlName="url"
+          (change)="onChangeUrl($event)"
           class="form-control"
           placeholder="Use the browse button or enter image url"
         />
         <div class="input-group-append" id="btn4">
-          <button
+          <input
             type="submit"
             class="btn btn-default btn-outline-secondary"
-            type="button"
-          >
-            Search
-          </button>
+            value="Submit"
+          />
         </div>
       </div>
     </form>

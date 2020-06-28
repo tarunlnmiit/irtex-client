@@ -1,4 +1,4 @@
-<div style="background-color: #f2f2f2; padding: 5px;">
+<div *ngIf="!hideSearchForm" style="background-color: #f2f2f2; padding: 5px;">
   <div class="container">
     <div style="margin: auto;">
       <app-search-form></app-search-form>
@@ -8,6 +8,16 @@
 <div class="mt-5">
   <div class="container">
     <div>
+      <div class="fab">
+        <button
+          (click)="onCompareButtonClicked()"
+          *ngIf="selectedImages.length > 1"
+          mat-raised-button
+          color="accent"
+        >
+          Click to Compare
+        </button>
+      </div>
       <div class="row card2">
         <div *ngIf="query.name" class="col-sm-12">
           <div class="d-flex">
@@ -85,7 +95,9 @@
           <div class="col-sm-12">
             <div class="d-flex">
               <div class="p-2 align-self-center">
-                <mat-checkbox></mat-checkbox>
+                <mat-checkbox
+                  (change)="onImageselect(result.name)"
+                ></mat-checkbox>
               </div>
               <div class="p-3">
                 <img
@@ -139,15 +151,14 @@
                     margin-left: 5px;
                   "
                 >
-                  <mat-tab-group>
-                    <mat-tab
-                      *ngFor="let feature of features"
-                      label="{{ feature }}"
-                    >
-                      Specific textual explanation for {{ feature }} will show
-                      up here
-                    </mat-tab>
-                  </mat-tab-group>
+                  <button
+                    (click)="openDialog(result.name)"
+                    class="mt-4"
+                    mat-flat-button
+                    color="primary"
+                  >
+                    Explain
+                  </button>
                 </div>
               </div>
             </div>

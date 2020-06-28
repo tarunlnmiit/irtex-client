@@ -38,6 +38,11 @@ export class SearchFormComponent implements OnInit {
       file: [''],
     });
   }
+
+  onChangeUrl(event) {
+    this.url = event.target.value;
+  }
+
   onFileChange(event) {
     this.hideSpinner = false;
     if (event.target.files.length > 0) {
@@ -46,53 +51,66 @@ export class SearchFormComponent implements OnInit {
       formData.append('file', file);
       // formData.append('url', null);
       // formData.append('name', file.name);
-      this.apiservice.upload(formData, '/upload/').subscribe(
-        (res) => {
-          this.response = res;
-          console.log(res);
-          if (res._id) {
-            //navigate to the results page
-            this.hideSpinner = true;
-            const inHome = this.router.url === '/';
-            console.log(this.router.url);
-            this.router.navigateByUrl(
-              `/results?id=${res._id}&inHome=${inHome}&dataset=${this.dataset}&session_id=${this.sessionId}`
-            );
-          }
-        },
-        (err) => {
-          this.error = err.message;
+      this.apiservice
+        .upload(
+          formData,
+          '/upload/?' + `dataset=${this.dataset}&session_id=${this.sessionId}`
+        )
+        .subscribe(
+          (res) => {
+            this.response = res;
+            console.log(res);
+            if (res._id) {
+              //navigate to the results page
+              this.hideSpinner = true;
+              this.navigateToResults(res._id);
+            }
+          },
+          (err) => {
+            this.error = err.message;
 
-          this.hideSpinner = true;
-          console.log(err);
-          //show error message.
-        }
-      );
+            this.hideSpinner = true;
+            console.log(err);
+            //show error message.
+          }
+        );
     }
   }
 
   onSubmit() {
-    const formData = new FormData();
+    if (this.url.length > 0) {
+      this.hideSpinner = false;
+      const formData = new FormData();
+      formData.append('file', this.form.get('file').value);
+      formData.append('url', this.form.get('url').value);
+      console.log(formData);
+      this.apiservice
+        .upload(
+          formData,
+          '/search-url?' +
+            `dataset=${this.dataset}&session_id=${this.sessionId}`
+        )
+        .subscribe(
+          (res) => {
+            console.log(res);
+            if (res._id) {
+              this.hideSpinner = true;
+              this.navigateToResults(res._id);
+            }
+          },
+          (err) => {
+            this.error = err.message;
+            this.hideSpinner = true;
+          }
+        );
+    }
+  }
 
-    formData.append('file', this.form.get('file').value);
-    formData.append('url', this.form.get('url').value);
-    console.log(formData);
-    this.apiservice.upload(formData, 'search-url').subscribe(
-      (res) => {
-        console.log(res);
-        if (res._id) {
-          this.response = res;
-        }
-        //navigate to the results page
-      },
-      (err) => {
-        this.error = err;
-
-        this.error = err.message;
-
-        this.hideSpinner = true;
-        //show error message.
-      }
+  navigateToResults(resultId) {
+    const inHome = this.router.url === '/';
+    console.log(this.router.url);
+    this.router.navigateByUrl(
+      `/results?id=${resultId}&inHome=${inHome}&dataset=${this.dataset}&session_id=${this.sessionId}`
     );
   }
 }

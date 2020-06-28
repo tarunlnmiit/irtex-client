@@ -20,11 +20,20 @@ export class SearchService {
     return this.httpClient.get<QueryImage>(searchUrl);
   }
 
+  getQuerySet(dataset: string, sessionId: string): Observable<QueryImage[]> {
+    const url = `${this.baseUrl}/result/queries?session_id${sessionId}&dataset=${dataset}`;
+    return this.httpClient.get<QueryImage[]>(url);
+  }
+
   getSearchResults(
     imageId: string,
-    dataset: string
+    dataset: string,
+    isUrlSearch: boolean
   ): Observable<ResultResponse> {
-    const searchUrl = `${this.baseUrl}/result/${imageId}?dataset=${dataset}`;
+    let searchUrl = `${this.baseUrl}/result/${imageId}?dataset=${dataset}`;
+    if (isUrlSearch) {
+      searchUrl = `${this.baseUrl}/result/url?query_url=${imageId}&dataset=${dataset}`;
+    }
     return this.httpClient.get<ResultResponse>(searchUrl);
   }
 }

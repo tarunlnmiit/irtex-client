@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { SearchService } from 'src/app/services/search.service';
 import { ActivatedRoute } from '@angular/router';
@@ -8,6 +8,12 @@ import { environment } from '../../../environments/environment';
 import { ResultResponse } from 'src/app/common/resultResponse';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOptionSelectionChange } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ExplainDialogComponent } from '../explain-dialog/explain-dialog.component';
+import { Router } from '@angular/router';
+import { CompareDialogComponent } from '../compare-dialog/compare-dialog.component';
+import { Settings } from 'src/app/common/settings';
+import { MockResponses } from 'src/app/common/mockResponses';
 
 @Component({
   selector: 'app-search-results',
@@ -26,21 +32,33 @@ export class SearchResultsComponent implements OnInit {
   selectedFeature: string;
   dataset: string;
   sessionId: string;
+  @Input() hideSearchForm: boolean;
+  @Input() boundedQuery: string;
+  @Input() boundedQueryUrl: string;
 
   // ImageBaseUrl = 'https://irtex-engine.herokuapp.com';
-  ImageBaseUrl = 'http://localhost:8000';
+  ImageBaseUrl = Settings.baseUrl;
   // MatPaginator Inputs
   length: number;
   pageSize: number;
   pageSizeOptions: number[] = [5, 10, 25, 100];
   pageEvent: PageEvent;
 
+  selectedImages: string[];
+
   constructor(
     private searchService: SearchService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.error = '';
     this.results = [];
+    this.selectedImages = [];
+  }
+
+  ngOnChanges(changes) {
+    this.initializePageForBoundedQuery();
   }
 
   ngOnInit(): void {
@@ -66,9 +84,23 @@ export class SearchResultsComponent implements OnInit {
     });
   }
   initializePage() {
-    this.query = new QueryImage();
+    //this.query = new QueryImage();
     this.getQueryImage();
-    this.loadResults();
+    //this.loadResults(false);
+  }
+  initializePageForBoundedQuery() {
+    if (this.boundedQuery != '') {
+      this.query = { name: this.boundedQuery, url: this.boundedQueryUrl };
+      this.renderedResults = [];
+      this.router.navigate([], {
+        relativeTo: this.route,
+        //queryParams: { id: this.boundedQueryUrl }, //change this to load actual
+        queryParams: { id: '5ef2127664d5fddabe8b97e9' },
+        queryParamsHandling: 'merge',
+      });
+      //this.loadResults(true); Change too.
+      this.loadResults(false);
+    }
   }
   getQueryImage(): void {
     if (this.route.snapshot.queryParams['id']) {
@@ -76,7 +108,7 @@ export class SearchResultsComponent implements OnInit {
       this.searchService.getQueryImageDetails(this.imageId).subscribe(
         (data) => {
           this.query = data;
-          this.renderedResults = [];
+          //this.renderedResults = [];
         },
         (err) => {
           this.error = err.message;
@@ -91,25 +123,30 @@ export class SearchResultsComponent implements OnInit {
     }
   }
 
-  loadResults(): void {
+  loadResults(isUrlSearch: boolean): void {
     if (this.route.snapshot.queryParams['id']) {
       this.hideSpinner = false;
       this.imageId = this.route.snapshot.queryParams['id'];
-      this.searchService.getSearchResults(this.imageId, this.dataset).subscribe(
-        (data) => {
-          console.log(data);
-          this.hideSpinner = true;
-          this.resultResponse = data;
-          this.showResults();
-        },
-        (err) => {
-          this.error = err.message;
+      // this.searchService
+      //   .getSearchResults(this.imageId, this.dataset, isUrlSearch)
+      //   .subscribe(
+      //     (data) => {
+      //       console.log(data);
+      //       this.hideSpinner = true;
+      //       this.resultResponse = data;
+      //       this.showResults();
+      //     },
+      //     (err) => {
+      //       this.error = err.message;
 
-          this.hideSpinner = true;
-          console.log(err);
-          //show error message.
-        }
-      );
+      //       this.hideSpinner = true;
+      //       console.log(err);
+      //       //show error message.
+      //     }
+      //   );
+      this.hideSpinner = true;
+      this.resultResponse = MockResponses.searchResultResponse;
+      this.showResults();
     } else {
       //url is faulty
     }
@@ -178,5 +215,53 @@ export class SearchResultsComponent implements OnInit {
     try {
       return parseFloat(val) * 100;
     } catch (error) {}
+  }
+
+  openDialog(resultItem) {
+    const dialogRef = this.dialog.open(ExplainDialogComponent, {
+      width: '600',
+      height: '600',
+      data: {
+        query: this.imageId,
+        result: resultItem,
+        sessionId: this.sessionId,
+        dataset: this.dataset,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  onImageselect(imgName) {
+    if (this.selectedImages.indexOf(imgName) >= 0) {
+      this.selectedImages.splice(this.selectedImages.indexOf(imgName), 1);
+    } else {
+      this.selectedImages.push(imgName);
+    }
+    console.log(this.selectedImages);
+  }
+
+  onCompareButtonClicked() {
+    //send data of the selected item
+    let selected = this.results.filter((x) => {
+      return this.selectedImages.indexOf(x.name) >= 0;
+    });
+    const dialogRef = this.dialog.open(CompareDialogComponent, {
+      width: '1000',
+      height: '800',
+      data: {
+        query: this.imageId,
+        results: selected,
+        sessionId: this.sessionId,
+        dataset: this.dataset,
+        features: this.features,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
