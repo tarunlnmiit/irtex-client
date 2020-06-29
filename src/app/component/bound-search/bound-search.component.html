@@ -5,39 +5,41 @@
 
 <div class="container mt-5">
   <div class="row">
-    <div class="col-sm-2">
-      <div class="card2" style="padding: 20px;">
-        <h6>Select image to search with</h6>
+    <div class="col-sm-3">
+      <div class="card2" style="padding: 10px;">
+        <h6>Click on an image to perform search</h6>
         <mat-progress-bar
           [hidden]="hideSpinner"
           mode="indeterminate"
         ></mat-progress-bar>
         <mat-divider></mat-divider>
-        <div style="width: 110px;">
-          <div *ngFor="let image of queryImages" class="mt-2">
-            <div
-              [ngClass]="{ 'active-query': queryName === image.name }"
-              style="padding: 2px;"
-            >
-              <a href="" onclick="event.preventDefault()">
-                <div
-                  class="query-image"
-                  (click)="onQueryImageClick(image.name, image.url)"
-                >
-                  <img
-                    [src]="ImageBaseUrl + image.url"
-                    width="100"
-                    [alt]="image.name"
-                  />
-                </div>
-              </a>
-            </div>
-          </div>
+        <div class="img-list">
+          <ul>
+            <li *ngFor="let image of queryImages" class="mt-2 query-image-div">
+              <div
+                [ngClass]="{ 'active-query': queryName === image.name }"
+                style="padding: 2px;"
+              >
+                <a href="" onclick="event.preventDefault()">
+                  <div
+                    class="query-image"
+                    (click)="onQueryImageClick(image.name, image.url)"
+                  >
+                    <img
+                      [src]="ImageBaseUrl + image.url"
+                      width="100"
+                      [alt]="image.name"
+                    />
+                  </div>
+                </a>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
     <div class="col-sm-8">
-      <h2>Search results will show here</h2>
+      <h2>Search results:</h2>
       <app-search-results
         [hideSearchForm]="true"
         [boundedQuery]="queryName"

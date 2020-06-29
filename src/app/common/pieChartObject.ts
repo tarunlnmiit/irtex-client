@@ -26,9 +26,10 @@ export class PieChartObject {
   public pieChartColors = [
     {
       backgroundColor: [
-        'rgba(255,0,0,0.3)',
-        'rgba(0,255,0,0.3)',
-        'rgba(0,0,255,0.3)',
+        'rgba(255,0,0,0.5)',
+        'rgba(0,255,0,0.5)',
+        'rgba(0,0,205,0.5)',
+        'rgba(124,124,0,0.5)',
       ],
     },
   ];

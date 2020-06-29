@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Settings } from '../common/settings';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExplainService {
-  private baseUrl = 'http://localhost:8000/result';
+  private baseUrl = Settings.baseUrl + '/result';
   constructor(private httpClient: HttpClient) {}
 
   getQueryImageDetails(parameters: string): Observable<any> {

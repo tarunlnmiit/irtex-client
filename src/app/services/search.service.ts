@@ -36,4 +36,10 @@ export class SearchService {
     }
     return this.httpClient.get<ResultResponse>(searchUrl);
   }
+
+  getSearchGlobalExplanation(imageId, dataset) {
+    let expplainationUrl = `${this.baseUrl}/result/explanation/${imageId}?dataset=${dataset}`;
+
+    return this.httpClient.get<string>(expplainationUrl);
+  }
 }

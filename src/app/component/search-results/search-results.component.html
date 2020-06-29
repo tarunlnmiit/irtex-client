@@ -22,7 +22,7 @@
         <div *ngIf="query.name" class="col-sm-12">
           <div class="d-flex">
             <div class="p-2 align-self-center">
-              <mat-checkbox></mat-checkbox>
+              <mat-checkbox [disabled]="true"></mat-checkbox>
             </div>
             <div class="p-3">
               <img
@@ -46,6 +46,16 @@
               >
                 {{ results.length }} results retrieved
               </p>
+              <div>
+                <mat-progress-bar
+                  [hidden]="hideExplanationSpinner"
+                  mode="indeterminate"
+                ></mat-progress-bar>
+
+                <p [hidden]="!hideExplanationSpinner">
+                  {{ globalExplanation }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -106,6 +116,13 @@
                   src="{{ ImageBaseUrl + result.url }}"
                   alt=""
                 />
+                <button
+                  class="self-query mt-2"
+                  mat-stroked-button
+                  color="primary"
+                >
+                  Search
+                </button>
               </div>
               <div class="p-2 d-flex">
                 <div style="min-width: 400px;">
@@ -114,32 +131,50 @@
                     <span class="text-muted small">[{{ result.label }}]</span>
                   </h5>
 
-                  <p>General explanation</p>
                   <div style="display: block; max-width: 250px;">
                     <div style="font-size: 0.7em;">
-                      <span *ngIf="result.similarity_list">
+                      <span *ngIf="result.similarity_list; else singleScore">
                         <div
                           *ngFor="let feature of features; index as i"
                           class="mb-1"
                         >
-                          <span>{{ feature }}</span>
+                          <span
+                            ><mat-label
+                              ><span class="feature-name"
+                                >{{ feature }}
+                                <span class="showOnHover">
+                                  {{
+                                    i != 0
+                                      ? toFloatPercentage(
+                                          result.similarity_list[i]
+                                        )
+                                      : (result.similarity * 100
+                                        | number: "1.0-0")
+                                  }}
+                                </span>
+                              </span>
+                            </mat-label></span
+                          >
+
                           <mat-progress-bar
                             mode="determinate"
                             [value]="
                               i != 0
-                                ? toFloatPercentage(
-                                    result.similarity_list[i + 1]
-                                  )
+                                ? toFloatPercentage(result.similarity_list[i])
                                 : result.similarity * 100
                             "
                           ></mat-progress-bar>
                         </div>
                       </span>
-
-                      <span>{{ selectedFeature }} </span
-                      ><span class="badge badge-primary"
-                        >{{ result.similarity * 100 | number: "1.0-0" }} %</span
-                      >
+                      <ng-template #singleScore>
+                        <span>{{ selectedFeature }} </span
+                        ><span class="badge badge-primary"
+                          >{{
+                            result.similarity * 100 | number: "1.0-0"
+                          }}
+                          %</span
+                        >
+                      </ng-template>
                     </div>
                   </div>
                 </div>

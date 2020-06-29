@@ -1,7 +1,22 @@
 .active-query {
-  border: 2px solid green;
+  border: 2px solid darkblue;
 }
 
 .query-image:hover {
   border: 2px solid pink;
+}
+
+.query-image-div {
+  display: inline-block;
+}
+
+.img-list > div,
+.img-list img {
+  display: inline-block;
+}
+
+.img-list ul {
+  padding: 0;
+  margin-top: 0;
+  text-decoration: none;
 }

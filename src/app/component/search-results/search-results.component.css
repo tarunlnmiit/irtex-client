@@ -17,11 +17,24 @@ canvas {
   transition: all 0.1s ease-in-out;
 
   position: fixed;
-  right: 400px;
+  right: 210px;
   bottom: 400px;
 }
 
 .fab:hover {
   /* box-shadow: 0 6px 14px 0 #666;
   transform: scale(1.05); */
+}
+
+.showOnHover {
+  background: #f2f2f2;
+  padding: 2px;
+  display: none;
+}
+
+.feature-name:hover > .showOnHover {
+  display: inline;
+}
+
+.feature-name:hover > {
 }

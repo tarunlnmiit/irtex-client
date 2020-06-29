@@ -1,8 +1,11 @@
 <div>
   <div>
-    <div *ngFor="let p of pieCharts; index as i" style="display: inline-block;">
+    <div
+      *ngFor="let p of pieCharts.slice(1); index as i"
+      style="display: inline-block;"
+    >
       <div class="chart">
-        <h6 class="text-center">{{ features[i] }}</h6>
+        <h6 class="text-center">{{ features.slice(1)[i] }}</h6>
         <canvas
           baseChart
           [data]="p.pieChartData"

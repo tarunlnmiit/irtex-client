@@ -28,10 +28,13 @@ export class SearchResultsComponent implements OnInit {
   query: QueryImage;
   features = [];
   hideSpinner = true;
+  hideExplanationSpinner = true;
   error: string;
+  explainError: string;
   selectedFeature: string;
   dataset: string;
   sessionId: string;
+  globalExplanation: string;
   @Input() hideSearchForm: boolean;
   @Input() boundedQuery: string;
   @Input() boundedQueryUrl: string;
@@ -147,6 +150,9 @@ export class SearchResultsComponent implements OnInit {
       this.hideSpinner = true;
       this.resultResponse = MockResponses.searchResultResponse;
       this.showResults();
+
+      //get global explanation
+      this.getGloblaExplanation();
     } else {
       //url is faulty
     }
@@ -213,7 +219,7 @@ export class SearchResultsComponent implements OnInit {
 
   toFloatPercentage(val) {
     try {
-      return parseFloat(val) * 100;
+      return (parseFloat(val) * 100).toFixed(2);
     } catch (error) {}
   }
 
@@ -226,6 +232,7 @@ export class SearchResultsComponent implements OnInit {
         result: resultItem,
         sessionId: this.sessionId,
         dataset: this.dataset,
+        features: this.features,
       },
     });
 
@@ -263,5 +270,24 @@ export class SearchResultsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  getGloblaExplanation() {
+    this.searchService
+      .getSearchGlobalExplanation(this.imageId, this.dataset)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.hideExplanationSpinner = true;
+          this.globalExplanation = data;
+        },
+        (err) => {
+          this.explainError = err.message;
+
+          this.hideExplanationSpinner = true;
+          console.log(err);
+          //show error message.
+        }
+      );
   }
 }
