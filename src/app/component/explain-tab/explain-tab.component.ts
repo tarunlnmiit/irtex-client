@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ExplainService } from 'src/app/services/explain.service.';
 import { Explanation } from 'src/app/common/explanation';
+import { Settings } from 'src/app/common/settings';
 
 @Component({
   selector: 'app-explain-tab',
@@ -14,10 +15,12 @@ export class ExplainTabComponent implements OnInit {
   @Input() dataset: string;
   @Input() sessionId: string;
   @Input() features: string[];
+  @Input() endpoints: string[];
   error: '';
   explanations: Explanation[];
   hideSpinners: boolean[];
   errors: string[];
+  baseUrl = Settings.baseUrl;
   constructor(private explainService: ExplainService) {}
 
   ngOnInit(): void {
@@ -25,6 +28,8 @@ export class ExplainTabComponent implements OnInit {
   }
 
   getExplnation() {
+    this.features = this.features.slice(1);
+    this.endpoints = this.endpoints;
     this.explanations = new Array(this.features.length);
     this.hideSpinners = new Array(this.features.length);
     this.errors = new Array(this.features.length);
@@ -32,17 +37,16 @@ export class ExplainTabComponent implements OnInit {
     for (let i = 0; i < this.explanations.length; i++) {
       this.hideSpinners[i] = false;
       let p = {
-        query: this.query,
-        result: this.result,
+        query_url: this.query,
+        result_url: this.result,
         dataset: this.dataset,
         session_id: this.sessionId,
-        feature: this.features[i],
       };
       const parameters = new URLSearchParams(p).toString();
-      this.explainService.getQueryImageDetails(parameters).subscribe(
+      this.explainService.getQueryImageDetails(this.endpoints[i], parameters).subscribe(
         (data) => {
           console.log(data);
-          this.explanations[i] = data.explanations as Explanation;
+          this.explanations[i] = data as Explanation;
         },
         (err) => {
           this.error = err.message;

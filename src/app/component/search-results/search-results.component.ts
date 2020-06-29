@@ -13,7 +13,6 @@ import { ExplainDialogComponent } from '../explain-dialog/explain-dialog.compone
 import { Router } from '@angular/router';
 import { CompareDialogComponent } from '../compare-dialog/compare-dialog.component';
 import { Settings } from 'src/app/common/settings';
-import { MockResponses } from 'src/app/common/mockResponses';
 
 @Component({
   selector: 'app-search-results',
@@ -27,6 +26,7 @@ export class SearchResultsComponent implements OnInit {
   imageId: string;
   query: QueryImage;
   features = [];
+  endpoints = [];
   hideSpinner = true;
   hideExplanationSpinner = true;
   error: string;
@@ -60,8 +60,17 @@ export class SearchResultsComponent implements OnInit {
     this.selectedImages = [];
   }
 
-  ngOnChanges(changes) {
-    this.initializePageForBoundedQuery();
+  ngOnChanges(changes) {  
+    if (this.boundedQuery != '') {
+      this.query = { name: this.boundedQuery, url: this.boundedQueryUrl };
+      this.renderedResults = [];
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { id: this.boundedQueryUrl }, 
+        queryParamsHandling: 'merge',
+      });
+      this.ngOnInit();
+    }
   }
 
   ngOnInit(): void {
@@ -71,40 +80,19 @@ export class SearchResultsComponent implements OnInit {
     if (this.route.snapshot.queryParams['dataset']) {
       this.dataset = this.route.snapshot.queryParams['dataset'];
     }
-    this.route.url.subscribe((url) => {
-      if (this.route.snapshot.queryParams['inHome']) {
-        const inHome = this.route.snapshot.queryParams['inHome'];
-        console.log(inHome);
-        if (inHome == 'false') {
-          this.initializePage();
-        }
-      }
-    });
-    this.route.paramMap.subscribe(() => {
-      if (this.hideSpinner) {
-        this.initializePage();
-      }
-    });
+    this.initializePage();
+    // this.route.paramMap.subscribe(() => {
+    //   if (this.hideSpinner) {
+    //     this.initializePage();
+    //   }
+    // });
   }
   initializePage() {
-    //this.query = new QueryImage();
+    this.query = new QueryImage();
     this.getQueryImage();
-    //this.loadResults(false);
+    this.loadResults(true);
   }
-  initializePageForBoundedQuery() {
-    if (this.boundedQuery != '') {
-      this.query = { name: this.boundedQuery, url: this.boundedQueryUrl };
-      this.renderedResults = [];
-      this.router.navigate([], {
-        relativeTo: this.route,
-        //queryParams: { id: this.boundedQueryUrl }, //change this to load actual
-        queryParams: { id: '5ef2127664d5fddabe8b97e9' },
-        queryParamsHandling: 'merge',
-      });
-      //this.loadResults(true); Change too.
-      this.loadResults(false);
-    }
-  }
+
   getQueryImage(): void {
     if (this.route.snapshot.queryParams['id']) {
       this.imageId = this.route.snapshot.queryParams['id'];
@@ -130,26 +118,26 @@ export class SearchResultsComponent implements OnInit {
     if (this.route.snapshot.queryParams['id']) {
       this.hideSpinner = false;
       this.imageId = this.route.snapshot.queryParams['id'];
-      // this.searchService
-      //   .getSearchResults(this.imageId, this.dataset, isUrlSearch)
-      //   .subscribe(
-      //     (data) => {
-      //       console.log(data);
-      //       this.hideSpinner = true;
-      //       this.resultResponse = data;
-      //       this.showResults();
-      //     },
-      //     (err) => {
-      //       this.error = err.message;
+      this.searchService
+        .getSearchResults(this.imageId, this.dataset, isUrlSearch, this.sessionId)
+        .subscribe(
+          (data) => {
+            console.log(data);
+            this.hideSpinner = true;
+            this.resultResponse = data;
+            this.showResults();
+          },
+          (err) => {
+            this.error = err.message;
 
-      //       this.hideSpinner = true;
-      //       console.log(err);
-      //       //show error message.
-      //     }
-      //   );
-      this.hideSpinner = true;
-      this.resultResponse = MockResponses.searchResultResponse;
-      this.showResults();
+            this.hideSpinner = true;
+            console.log(err);
+            //show error message.
+          }
+        );
+      // this.hideSpinner = true;
+      // this.resultResponse = MockResponses.searchResultResponse;
+      // this.showResults();
 
       //get global explanation
       this.getGloblaExplanation();
@@ -160,6 +148,7 @@ export class SearchResultsComponent implements OnInit {
 
   showResults(): void {
     this.features = this.resultResponse.features;
+    this.endpoints = this.resultResponse.endpoints;
     this.selectedFeature = this.features[0];
     this.results = this.resultResponse.result;
     this.length = this.results.length;
@@ -233,6 +222,7 @@ export class SearchResultsComponent implements OnInit {
         sessionId: this.sessionId,
         dataset: this.dataset,
         features: this.features,
+        endpoints: this.endpoints,
       },
     });
 
@@ -273,13 +263,14 @@ export class SearchResultsComponent implements OnInit {
   }
 
   getGloblaExplanation() {
+    this.hideExplanationSpinner = false;
     this.searchService
-      .getSearchGlobalExplanation(this.imageId, this.dataset)
+      .getSearchGlobalExplanation(this.imageId, this.dataset, this.sessionId)
       .subscribe(
         (data) => {
           console.log(data);
           this.hideExplanationSpinner = true;
-          this.globalExplanation = data;
+          this.globalExplanation = data.explanation;
         },
         (err) => {
           this.explainError = err.message;

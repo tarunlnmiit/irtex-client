@@ -7,4 +7,5 @@ export class ResultResponse {
   segmentation: SearchResult[];
   local: SearchResult[];
   features: string[];
+  endpoints: string[];
 }

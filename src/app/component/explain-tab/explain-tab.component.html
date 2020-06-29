@@ -1,13 +1,13 @@
 <mat-dialog-content class="mat-typography">
   <div class="mb-3">
     <div class="row">
-      <div class="col-sm-2">
-        <img class="" src="https://via.placeholder.com/150" alt="" /> <br />
-        Query Image
+      <div class="col-sm-3">
+        <img class="" [src]="baseUrl+query" width="250" height="250" alt="" /> <br />
+        Original Query Image
       </div>
-      <div class="col-sm-2">
-        <img class="" src="https://via.placeholder.com/150" alt="" /><br />
-        Result Image
+      <div class="col-sm-3">
+        <img class="" [src]="baseUrl+result" width="250" height="250" alt="" /><br />
+        Original Result Image
       </div>
     </div>
     <br />
@@ -25,9 +25,9 @@
           <div class="col-sm-6">
             <span *ngFor="let img of explanations[i].images" class="pl-5">
               <img
-                width="250"
-                height="250"
-                [src]="'http://localhost:8000/media/cld_icons/' + img.url"
+                [width]="i==3?500:250"
+                [height]="i==3?250:250"
+                [src]="baseUrl + img.url"
                 [alt]="img.name"
               />
             </span>

@@ -36,7 +36,7 @@
               <h4>Search results for {{ query.name }}</h4>
 
               <span class="muted"
-                >Searching 10,000 images from the
+                >Searching images from the
                 {{ dataset | uppercase }} dataset</span
               >
               <p
@@ -52,7 +52,7 @@
                   mode="indeterminate"
                 ></mat-progress-bar>
 
-                <p [hidden]="!hideExplanationSpinner">
+                <p [hidden]="!hideExplanationSpinner" class="alert alert-primary">
                   {{ globalExplanation }}
                 </p>
               </div>
@@ -116,13 +116,7 @@
                   src="{{ ImageBaseUrl + result.url }}"
                   alt=""
                 />
-                <button
-                  class="self-query mt-2"
-                  mat-stroked-button
-                  color="primary"
-                >
-                  Search
-                </button>
+                <a mat-stroked-button class="self-query mt-2"  [href]="'http://localhost:4200/search?session_id=' + sessionId + '&dataset=' + dataset + '&id=' + result.url">Search</a>
               </div>
               <div class="p-2 d-flex">
                 <div style="min-width: 400px;">
@@ -187,7 +181,7 @@
                   "
                 >
                   <button
-                    (click)="openDialog(result.name)"
+                    (click)="openDialog(result.url)"
                     class="mt-4"
                     mat-flat-button
                     color="primary"

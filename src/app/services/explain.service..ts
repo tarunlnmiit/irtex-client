@@ -10,8 +10,8 @@ export class ExplainService {
   private baseUrl = Settings.baseUrl + '/result';
   constructor(private httpClient: HttpClient) {}
 
-  getQueryImageDetails(parameters: string): Observable<any> {
-    const searchUrl = `${this.baseUrl}/explain?${parameters}`;
+  getQueryImageDetails(feature: string, parameters: string): Observable<any> {
+    const searchUrl = `${this.baseUrl}/explain/${feature}?${parameters}`;
     return this.httpClient.get<any>(searchUrl);
   }
 }

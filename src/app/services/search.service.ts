@@ -16,30 +16,32 @@ export class SearchService {
   constructor(private httpClient: HttpClient) {}
 
   getQueryImageDetails(imageId: string): Observable<QueryImage> {
-    const searchUrl = `${this.baseUrl}/image/${imageId}`;
+    const searchUrl = `${this.baseUrl}/image?query_url=${imageId}`;
     return this.httpClient.get<QueryImage>(searchUrl);
   }
 
   getQuerySet(dataset: string, sessionId: string): Observable<QueryImage[]> {
-    const url = `${this.baseUrl}/result/queries?session_id${sessionId}&dataset=${dataset}`;
+    const url = `${this.baseUrl}/result/queries?session_id=${sessionId}&dataset=${dataset}`;
     return this.httpClient.get<QueryImage[]>(url);
   }
 
   getSearchResults(
     imageId: string,
     dataset: string,
-    isUrlSearch: boolean
+    isUrlSearch: boolean,
+    sessionId: string
   ): Observable<ResultResponse> {
+    console.log(dataset);
     let searchUrl = `${this.baseUrl}/result/${imageId}?dataset=${dataset}`;
     if (isUrlSearch) {
-      searchUrl = `${this.baseUrl}/result/url?query_url=${imageId}&dataset=${dataset}`;
+      searchUrl = `${this.baseUrl}/result/url?query_url=${imageId}&dataset=${dataset}&session_id=${sessionId}`;
     }
     return this.httpClient.get<ResultResponse>(searchUrl);
   }
 
-  getSearchGlobalExplanation(imageId, dataset) {
-    let expplainationUrl = `${this.baseUrl}/result/explanation/${imageId}?dataset=${dataset}`;
+  getSearchGlobalExplanation(imageId, dataset, sessionId) {
+    let expplainationUrl = `${this.baseUrl}/result/explain/global?dataset=${dataset}&query_url=${imageId}&session_id=${sessionId}`;
 
-    return this.httpClient.get<string>(expplainationUrl);
+    return this.httpClient.get<any>(expplainationUrl);
   }
 }
