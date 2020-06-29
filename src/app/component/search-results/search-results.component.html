@@ -52,7 +52,10 @@
                   mode="indeterminate"
                 ></mat-progress-bar>
 
-                <p [hidden]="!hideExplanationSpinner" class="alert alert-primary">
+                <p
+                  [hidden]="!hideExplanationSpinner"
+                  class="alert alert-primary"
+                >
                   {{ globalExplanation }}
                 </p>
               </div>
@@ -116,7 +119,20 @@
                   src="{{ ImageBaseUrl + result.url }}"
                   alt=""
                 />
-                <a mat-stroked-button class="self-query mt-2"  [href]="'http://localhost:4200/search?session_id=' + sessionId + '&dataset=' + dataset + '&id=' + result.url">Search</a>
+                <a
+                  mat-stroked-button
+                  class="self-query mt-2"
+                  style="color: darkblue !important;"
+                  [href]="
+                    'http://localhost:4200/search?session_id=' +
+                    sessionId +
+                    '&dataset=' +
+                    dataset +
+                    '&query_url=' +
+                    result.url
+                  "
+                  >Search</a
+                >
               </div>
               <div class="p-2 d-flex">
                 <div style="min-width: 400px;">

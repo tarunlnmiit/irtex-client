@@ -32,12 +32,12 @@ export class SearchResultsComponent implements OnInit {
   error: string;
   explainError: string;
   selectedFeature: string;
-  dataset: string;
-  sessionId: string;
   globalExplanation: string;
   @Input() hideSearchForm: boolean;
   @Input() boundedQuery: string;
   @Input() boundedQueryUrl: string;
+  @Input() sessionId: string;
+  @Input() dataset: string;
 
   // ImageBaseUrl = 'https://irtex-engine.herokuapp.com';
   ImageBaseUrl = Settings.baseUrl;
@@ -60,27 +60,28 @@ export class SearchResultsComponent implements OnInit {
     this.selectedImages = [];
   }
 
-  ngOnChanges(changes) {  
+  ngOnChanges(changes) {
+    console.log(changes);
     if (this.boundedQuery != '') {
       this.query = { name: this.boundedQuery, url: this.boundedQueryUrl };
       this.renderedResults = [];
       this.router.navigate([], {
         relativeTo: this.route,
-        queryParams: { id: this.boundedQueryUrl }, 
+        queryParams: { query_url: this.boundedQueryUrl },
         queryParamsHandling: 'merge',
       });
-      this.ngOnInit();
+      this.initializePage();
     }
   }
 
   ngOnInit(): void {
-    if (this.route.snapshot.queryParams['session_id']) {
-      this.sessionId = this.route.snapshot.queryParams['session_id'];
-    }
-    if (this.route.snapshot.queryParams['dataset']) {
-      this.dataset = this.route.snapshot.queryParams['dataset'];
-    }
-    this.initializePage();
+    // if (this.route.snapshot.queryParams['session_id']) {
+    //   this.sessionId = this.route.snapshot.queryParams['session_id'];
+    // }
+    // if (this.route.snapshot.queryParams['dataset']) {
+    //   this.dataset = this.route.snapshot.queryParams['dataset'];
+    // }
+    // this.initializePage();
     // this.route.paramMap.subscribe(() => {
     //   if (this.hideSpinner) {
     //     this.initializePage();
@@ -88,72 +89,47 @@ export class SearchResultsComponent implements OnInit {
     // });
   }
   initializePage() {
-    this.query = new QueryImage();
-    this.getQueryImage();
-    this.loadResults(true);
-  }
+    //this.query = new QueryImage();
+    //this.getQueryImage();
 
-  getQueryImage(): void {
-    if (this.route.snapshot.queryParams['id']) {
-      this.imageId = this.route.snapshot.queryParams['id'];
-      this.searchService.getQueryImageDetails(this.imageId).subscribe(
-        (data) => {
-          this.query = data;
-          //this.renderedResults = [];
-        },
-        (err) => {
-          this.error = err.message;
-
-          this.hideSpinner = true;
-          console.log(err);
-          //show error message.
-        }
-      );
-    } else {
-      //url is faulty
+    if (this.boundedQueryUrl != null) {
+      this.imageId = this.query.url;
+      this.loadResults(true);
     }
   }
 
   loadResults(isUrlSearch: boolean): void {
-    if (this.route.snapshot.queryParams['id']) {
-      this.hideSpinner = false;
-      this.imageId = this.route.snapshot.queryParams['id'];
-      this.searchService
-        .getSearchResults(this.imageId, this.dataset, isUrlSearch, this.sessionId)
-        .subscribe(
-          (data) => {
-            console.log(data);
-            this.hideSpinner = true;
-            this.resultResponse = data;
-            this.showResults();
-          },
-          (err) => {
-            this.error = err.message;
+    this.hideSpinner = false;
+    this.searchService
+      .getSearchResults(this.imageId, this.dataset, isUrlSearch, this.sessionId)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.hideSpinner = true;
+          this.resultResponse = data;
+          this.showResults();
+        },
+        (err) => {
+          this.error = err.message;
+          this.hideSpinner = true;
+          console.log(err);
+        }
+      );
 
-            this.hideSpinner = true;
-            console.log(err);
-            //show error message.
-          }
-        );
-      // this.hideSpinner = true;
-      // this.resultResponse = MockResponses.searchResultResponse;
-      // this.showResults();
-
-      //get global explanation
-      this.getGloblaExplanation();
-    } else {
-      //url is faulty
-    }
+    //get global explanation
+    this.getGloblaExplanation();
   }
 
   showResults(): void {
-    this.features = this.resultResponse.features;
-    this.endpoints = this.resultResponse.endpoints;
-    this.selectedFeature = this.features[0];
-    this.results = this.resultResponse.result;
-    this.length = this.results.length;
-    this.pageSize = 10;
-    this.renderPagination();
+    if (this.resultResponse.features != null) {
+      this.features = this.resultResponse.features;
+      this.endpoints = this.resultResponse.endpoints;
+      this.selectedFeature = this.features[0];
+      this.results = this.resultResponse.result;
+      this.length = this.results.length;
+      this.pageSize = 10;
+      this.renderPagination();
+    }
   }
 
   renderPagination(): void {

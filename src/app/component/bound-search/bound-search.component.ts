@@ -12,8 +12,8 @@ import { Settings } from 'src/app/common/settings';
 })
 export class BoundSearchComponent implements OnInit {
   queryImages: QueryImage[];
-  queryName: '';
-  queryUrl: '';
+  queryName: string;
+  queryUrl: string;
   hideSpinner = true;
   dataset: '';
   sessionId: '';
@@ -31,6 +31,12 @@ export class BoundSearchComponent implements OnInit {
     }
     if (this.route.snapshot.queryParams['dataset']) {
       this.dataset = this.route.snapshot.queryParams['dataset'];
+    }
+    if (this.route.snapshot.queryParams['query_url']) {
+      this.queryUrl = this.route.snapshot.queryParams['query_url'];
+      this.queryName = this.queryUrl.split('/')[
+        this.queryUrl.split('/').length - 1
+      ];
     }
     this.loadQuerySet();
   }

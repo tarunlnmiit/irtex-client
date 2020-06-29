@@ -38,3 +38,7 @@ canvas {
 
 .feature-name:hover > {
 }
+
+a.self-query:hover {
+  text-decoration: none;
+}
