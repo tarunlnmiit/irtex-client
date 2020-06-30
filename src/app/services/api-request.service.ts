@@ -8,14 +8,13 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Settings } from '../common/settings';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiRequestService {
-  //SERVER_URL: string = environment.backEndUrl;
-  // SERVER_URL: string = 'https://irtex-engine.herokuapp.com' + '/upload/';
-  SERVER_URL: string = 'http://localhost:8000';
+  SERVER_URL: string = Settings.baseUrl;
 
   constructor(private httpClient: HttpClient) {}
 

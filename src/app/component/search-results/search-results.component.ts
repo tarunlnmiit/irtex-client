@@ -61,7 +61,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   ngOnChanges(changes) {
-    console.log(changes);
+    this.selectedImages = [];
     if (this.boundedQuery != '') {
       this.query = { name: this.boundedQuery, url: this.boundedQueryUrl };
       this.renderedResults = [];
@@ -154,6 +154,12 @@ export class SearchResultsComponent implements OnInit {
         case this.features[2]:
           this.results = this.resultResponse.rbsd;
           break;
+        case this.features[3]:
+          this.results = this.resultResponse.segmentation;
+          break;
+        case this.features[4]:
+          this.results = this.resultResponse.local;
+          break;
 
         default:
           this.results = this.resultResponse.result;
@@ -190,8 +196,8 @@ export class SearchResultsComponent implements OnInit {
 
   openDialog(resultItem) {
     const dialogRef = this.dialog.open(ExplainDialogComponent, {
-      width: '600',
-      height: '600',
+      width: '1000',
+      height: '800',
       data: {
         query: this.imageId,
         result: resultItem,
@@ -203,7 +209,7 @@ export class SearchResultsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+      //console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -213,7 +219,7 @@ export class SearchResultsComponent implements OnInit {
     } else {
       this.selectedImages.push(imgName);
     }
-    console.log(this.selectedImages);
+    //console.log(this.selectedImages);
   }
 
   onCompareButtonClicked() {
@@ -221,6 +227,23 @@ export class SearchResultsComponent implements OnInit {
     let selected = this.results.filter((x) => {
       return this.selectedImages.indexOf(x.name) >= 0;
     });
+    //post to server
+    this.searchService
+      .sendCompareClicks(
+        this.imageId,
+        this.dataset,
+        this.sessionId,
+        this.selectedImages.toString()
+      )
+      .subscribe(
+        (data) => {
+          console.log(data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+
     const dialogRef = this.dialog.open(CompareDialogComponent, {
       width: '1000',
       height: '800',
@@ -234,7 +257,7 @@ export class SearchResultsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+      //console.log(`Dialog result: ${result}`);
     });
   }
 

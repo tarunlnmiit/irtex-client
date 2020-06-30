@@ -1,10 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SearchResult } from 'src/app/common/searchResult';
-import { ChartType, ChartOptions } from 'chart.js';
-import { Label } from 'ng2-charts';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { PieChartObject } from 'src/app/common/pieChartObject';
+import { Settings } from 'src/app/common/settings';
 
 @Component({
   selector: 'app-compare-dialog',
@@ -16,6 +14,7 @@ export class CompareDialogComponent implements OnInit {
 
   results: SearchResult[];
   features: string[];
+  baseUrl = Settings.baseUrl;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     console.log(data);
     this.results = data.results as SearchResult[];
@@ -41,7 +40,7 @@ export class CompareDialogComponent implements OnInit {
     }
     for (let i = 0; i < numberOfFeatures; i++) {
       for (let j = 0; j < numberOfInstances; j++) {
-        featureScores[i][j] = similrities[j][i];
+        featureScores[i][j] = similrities[j][i] * 100;
       }
     }
     //console.log(featureScores);
@@ -53,8 +52,6 @@ export class CompareDialogComponent implements OnInit {
       p.pieChartLabels = labels;
       this.pieCharts[i] = p;
     }
-
-    console.log(this.pieCharts);
   }
 
   normalizeFeatures(_featureScores) {

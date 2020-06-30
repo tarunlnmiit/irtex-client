@@ -1,5 +1,32 @@
 <div>
   <div>
+    <div>
+      <div class="row">
+        <div class="col-sm-3">
+          <img
+            class=""
+            [src]="baseUrl + data.query"
+            width="250"
+            height="250"
+            alt=""
+          />
+          <br />
+          Query Image
+        </div>
+        <div class="col-sm-2" *ngFor="let img of data.results">
+          <div>
+            <img
+              class=""
+              [src]="baseUrl + img.url"
+              width="200"
+              height="200"
+              alt=""
+            /><br />{{ img.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
     <h2>Comparison with respect to Query</h2>
     <p>
       Below visuals illustrates the similarity of selected images to the query
@@ -26,5 +53,4 @@
       </div>
     </div>
   </div>
-  <div></div>
 </div>

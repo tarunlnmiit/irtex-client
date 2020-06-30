@@ -1,49 +1,64 @@
-<mat-dialog-content class="mat-typography">
-  <div class="mb-3">
-    <div class="row">
-      <div class="col-sm-3">
-        <img class="" [src]="baseUrl+query" width="250" height="250" alt="" /> <br />
-        Original Query Image
-      </div>
-      <div class="col-sm-3">
-        <img class="" [src]="baseUrl+result" width="250" height="250" alt="" /><br />
-        Original Result Image
-      </div>
-    </div>
-    <br />
-  </div>
-  <mat-divider></mat-divider>
-  <mat-tab-group>
-    <mat-tab *ngFor="let feature of features; index as i" label="{{ feature }}">
-      <div *ngIf="hideSpinners[i]">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      </div>
-      <span class="text-center text-danger">{{ errors[i] }}</span>
-      <div *ngIf="explanations.length > 0 && explanations[i] != null">
-        <h2>Explanation for {{ feature }}</h2>
-        <div class="row">
-          <div class="col-sm-6">
-            <span *ngFor="let img of explanations[i].images" class="pl-5">
-              <img
-                [width]="i==3?500:250"
-                [height]="i==3?250:250"
-                [src]="baseUrl + img.url"
-                [alt]="img.name"
-              />
-            </span>
-          </div>
-          <div class="col-sm-4">
-            <ul>
-              <li *ngFor="let text of explanations[i].text">
-                {{ text }}
-              </li>
-            </ul>
-          </div>
+<div style="min-width: 1000px; min-height: 800px;">
+  <mat-dialog-content class="mat-typography">
+    <div class="mb-3">
+      <div class="row">
+        <div class="col-sm-3">
+          <img
+            class=""
+            [src]="baseUrl + query"
+            width="250"
+            height="250"
+            alt=""
+          />
+          <br />
+          Original Query Image
+        </div>
+        <div class="col-sm-3">
+          <img
+            class=""
+            [src]="baseUrl + result"
+            width="250"
+            height="250"
+            alt=""
+          /><br />
+          Original Result Image
         </div>
       </div>
-    </mat-tab>
-  </mat-tab-group>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close></button>
-</mat-dialog-actions>
+      <br />
+    </div>
+    <mat-divider></mat-divider>
+    <mat-tab-group>
+      <mat-tab
+        *ngFor="let feature of features; index as i"
+        label="{{ feature }}"
+      >
+        <div *ngIf="hideSpinners[i]">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        <span class="text-center text-danger">{{ errors[i] }}</span>
+        <div *ngIf="explanations.length > 0 && explanations[i] != null">
+          <h2>Explanation for {{ feature }}</h2>
+          <div class="row">
+            <div class="col-sm-7">
+              <span *ngFor="let img of explanations[i].images" class="pl-5">
+                <img
+                  [width]="i == 3 ? 500 : 250"
+                  [height]="i == 3 ? 250 : 250"
+                  [src]="baseUrl + img.url"
+                  [alt]="img.name"
+                />
+              </span>
+            </div>
+            <div class="col-sm-4">
+              <ul>
+                <li *ngFor="let text of explanations[i].text">
+                  {{ text }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+</div>

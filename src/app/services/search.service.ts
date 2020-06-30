@@ -6,13 +6,13 @@ import { QueryImage } from '../common/queryImage';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { ResultResponse } from '../common/resultResponse';
+import { Settings } from '../common/settings';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-  // private baseUrl = 'https://irtex-engine.herokuapp.com';
-  private baseUrl = 'http://localhost:8000';
+  private baseUrl = Settings.baseUrl;
   constructor(private httpClient: HttpClient) {}
 
   getQueryImageDetails(imageId: string): Observable<QueryImage> {
@@ -42,6 +42,11 @@ export class SearchService {
   getSearchGlobalExplanation(imageId, dataset, sessionId) {
     let expplainationUrl = `${this.baseUrl}/result/explain/global?dataset=${dataset}&query_url=${imageId}&session_id=${sessionId}`;
 
+    return this.httpClient.get<any>(expplainationUrl);
+  }
+
+  sendCompareClicks(imageId, dataset, sessionId, selectedImages) {
+    let expplainationUrl = `${this.baseUrl}/result/compare?dataset=${dataset}&query_url=${imageId}&session_id=${sessionId}&selected_images=${selectedImages}`;
     return this.httpClient.get<any>(expplainationUrl);
   }
 }
