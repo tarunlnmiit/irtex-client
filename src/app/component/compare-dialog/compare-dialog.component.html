@@ -1,4 +1,4 @@
-<div>
+<div style="overflow-y: scroll; overflow-x: hidden; height: 600px;">
   <div>
     <div>
       <div class="row">
@@ -14,12 +14,12 @@
           Query Image
         </div>
         <div class="col-sm-2" *ngFor="let img of data.results">
-          <div>
+          <div class="ml-2">
             <img
               class=""
               [src]="baseUrl + img.url"
-              width="200"
-              height="200"
+              width="160"
+              height="160"
               alt=""
             /><br />{{ img.name }}
           </div>

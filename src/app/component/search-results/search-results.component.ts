@@ -197,7 +197,7 @@ export class SearchResultsComponent implements OnInit {
   openDialog(resultItem) {
     const dialogRef = this.dialog.open(ExplainDialogComponent, {
       width: '1000',
-      height: '800',
+      height: '600',
       data: {
         query: this.imageId,
         result: resultItem,
@@ -246,7 +246,7 @@ export class SearchResultsComponent implements OnInit {
 
     const dialogRef = this.dialog.open(CompareDialogComponent, {
       width: '1000',
-      height: '800',
+      height: '500',
       data: {
         query: this.imageId,
         results: selected,
