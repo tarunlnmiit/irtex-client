@@ -29,6 +29,7 @@ export class ExplainTabComponent implements OnInit {
 
   getExplnation() {
     this.features = this.features.slice(1);
+    this.features.push('Semantic');
     this.endpoints = this.endpoints;
     this.explanations = new Array(this.features.length);
     this.hideSpinners = new Array(this.features.length);
