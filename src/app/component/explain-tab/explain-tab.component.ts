@@ -50,6 +50,7 @@ export class ExplainTabComponent implements OnInit {
           (data) => {
             console.log(data);
             this.explanations[i] = data as Explanation;
+            this.hideSpinners[i] = true;
           },
           (err) => {
             this.error = err.message;
