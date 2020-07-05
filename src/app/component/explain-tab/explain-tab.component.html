@@ -32,7 +32,7 @@
         *ngFor="let feature of features; index as i"
         label="{{ feature }}"
       >
-        <div *ngIf="hideSpinners[i]">
+        <div [hidden]="hideSpinners[i]">
           <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </div>
         <span class="text-center text-danger">{{ errors[i] }}</span>

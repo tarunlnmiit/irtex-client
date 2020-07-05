@@ -29,6 +29,7 @@ export class ExplainTabComponent implements OnInit {
 
   getExplnation() {
     this.features = this.features.slice(1);
+    this.features.push('Semantic');
     this.endpoints = this.endpoints;
     this.explanations = new Array(this.features.length);
     this.hideSpinners = new Array(this.features.length);
@@ -43,19 +44,21 @@ export class ExplainTabComponent implements OnInit {
         session_id: this.sessionId,
       };
       const parameters = new URLSearchParams(p).toString();
-      this.explainService.getQueryImageDetails(this.endpoints[i], parameters).subscribe(
-        (data) => {
-          console.log(data);
-          this.explanations[i] = data as Explanation;
-        },
-        (err) => {
-          this.error = err.message;
+      this.explainService
+        .getQueryImageDetails(this.endpoints[i], parameters)
+        .subscribe(
+          (data) => {
+            console.log(data);
+            this.explanations[i] = data as Explanation;
+          },
+          (err) => {
+            this.error = err.message;
 
-          this.hideSpinners[i] = true;
-          console.log(err);
-          this.errors[i] = err;
-        }
-      );
+            this.hideSpinners[i] = true;
+            console.log(err);
+            this.errors[i] = err;
+          }
+        );
     }
   }
 }

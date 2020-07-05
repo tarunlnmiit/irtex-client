@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiRequestService } from '../../services/api-request.service';
 import { Router } from '@angular/router';
+import { HowToPageComponent } from '../how-to-page/how-to-page.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sign-in',
@@ -23,7 +25,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private apiservice: ApiRequestService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.hideSpinner = true;
   }
@@ -68,5 +71,11 @@ export class SignInComponent implements OnInit {
         //show error message.
       }
     );
+  }
+  openHelpDialog() {
+    const dialogRef = this.dialog.open(HowToPageComponent, {
+      width: '1000',
+      height: '600',
+    });
   }
 }

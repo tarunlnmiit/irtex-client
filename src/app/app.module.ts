@@ -31,11 +31,14 @@ import { ExplainDialogComponent } from './component/explain-dialog/explain-dialo
 import { ExplainTabComponent } from './component/explain-tab/explain-tab.component';
 import { BoundSearchComponent } from './component/bound-search/bound-search.component';
 import { CompareDialogComponent } from './component/compare-dialog/compare-dialog.component';
+import { HowToPageComponent } from './component/how-to-page/how-to-page.component';
+import { MenuComponent } from './component/menu/menu.component';
 
 const routes: Routes = [
   { path: 'results', component: SearchResultsComponent },
   { path: 'search', component: BoundSearchComponent },
   { path: 'explain', component: ExplainPageComponent },
+  { path: 'how-to', component: HowToPageComponent },
   { path: '', component: HomePageComponent },
 ];
 
@@ -52,6 +55,8 @@ const routes: Routes = [
     ExplainTabComponent,
     BoundSearchComponent,
     CompareDialogComponent,
+    HowToPageComponent,
+    MenuComponent,
   ],
   imports: [
     ChartsModule,
