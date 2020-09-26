@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  backEndUrl: 'http://localhost:8000',
+  // backEndUrl: 'http://localhost:8000',
+  backEndUrl: 'https://80aa1369a498.ngrok.io',
 };
 
 /*
